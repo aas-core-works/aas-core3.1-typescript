@@ -30,7 +30,7 @@
     "build:declarations": "tsc -p tsconfig.json",
     "prebuild": "rimraf dist",
     "build": "npm run build:esm && npm run build:cjs && npm run build:bundles && npm run build:declarations",
-    "lint": "eslint . --ext .ts",
+    "lint": "eslint src test --ext .ts",
     "test": "jest --coverage",
     "format": "prettier --config .prettierrc \"src/**/*.ts\" \"test/**/*.ts\" \"*.ts\" --write"
   },

@@ -17,7 +17,7 @@ function testEncodeDecode(text: string, expectedEncoded: string): void {
   expect(decodedOrError.mustValue()).toEqual(bytes);
 }
 
-// NOTE (mristin, 2022-12-02):
+// NOTE (mristin):
 // The following tests come from:
 // https://www.rfc-editor.org/rfc/rfc4648#section-10
 
@@ -69,7 +69,7 @@ test("unexpected padding in the middle", () => {
 });
 
 test("Bytes representing an invalid UTF-8 sequence encode OK", () => {
-  // NOTE (mristin, 2022-12-02):
+  // NOTE (mristin):
   // We simply add a test to make sure our implementation does not suffer from
   // issues raised in:
   // https://stackoverflow.com/questions/30106476/using-javascripts-atob-to-decode-base64-doesnt-properly-decode-utf-8-strings
@@ -78,7 +78,7 @@ test("Bytes representing an invalid UTF-8 sequence encode OK", () => {
   // https://stackoverflow.com/questions/1301402/example-invalid-utf8-string
   const bytes = new Uint8Array([0xc3, 0x28]);
 
-  // NOTE (mristin, 2022-12-02):
+  // NOTE (mristin):
   // This encoding was obtained by Python `base64` module.
   const expectedEncoded = "wyg=";
 
@@ -92,7 +92,7 @@ test("Bytes representing an invalid UTF-8 sequence encode OK", () => {
   expect(decodedOrError.mustValue()).toEqual(bytes);
 });
 
-// NOTE (mristin, 2022-12-02):
+// NOTE (mristin):
 // The following checks come from: https://eprint.iacr.org/2022/361.pdf
 
 test("'Hello' as 'SGVsbG8=' OK", () => {
@@ -100,7 +100,7 @@ test("'Hello' as 'SGVsbG8=' OK", () => {
 });
 
 test("our implementation suffers from padding inconsistency of 'Hello' as 'SGVsbG9='", () => {
-  // NOTE (mristin, 2022-12-02):
+  // NOTE (mristin):
   // This is not a test case, but we merely document that there is a possible
   // attack vector where different strings encode the *same* byte sequence.
 
@@ -117,7 +117,7 @@ test("our implementation suffers from padding inconsistency of 'Hello' as 'SGVsb
 });
 
 test("table from rickkas7/Base64RK", () => {
-  // NOTE (mristin, 2022-12-02):
+  // NOTE (mristin):
   // The following tests have been scraped from:
   // https://github.com/rickkas7/Base64RK/blob/183d20e62b96ef9b0230c80c7a172715ca6f661e/test/unit-test/unit-test.cpp
 

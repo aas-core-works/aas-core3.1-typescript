@@ -11,12 +11,12 @@ import * as AasVerification from "../src/verification";
 import * as AasJsonization from "../src/jsonization";
 import { Path } from "../src/jsonization";
 
-// NOTE (mristin, 2022-12-07):
+// NOTE (mristin):
 // It is tedious to record manually all the expected error messages. Therefore we include this variable
 // to steer the automatic recording. We intentionally inter-twine the recording code with the test code
 // to keep them close to each other so that they are easier to maintain.
 export const RECORD_MODE_ENVIRONMENT_VARIABLE_NAME =
-  "AAS_CORE3_1_TYPESCRIPT_RECORD_MODE";
+  "AAS_CORE3_1_TYPESCRIPT_TEST_RECORD_MODE";
 
 const RECORD_MODE_TEXT =
   process.env[RECORD_MODE_ENVIRONMENT_VARIABLE_NAME]?.toLowerCase();
@@ -27,20 +27,20 @@ export const TEST_DATA_DIR = process.env["AAS_CORE3_1_TYPESCRIPT_TEST_DATA_DIR"]
 if (TEST_DATA_DIR === null || TEST_DATA_DIR === undefined) {
   throw new Error(
     "The path to the test data directory is missing in the environment: " +
-      "AAS_CORE3_1_TYPESCRIPT_TEST_DATA_DIR"
+      "AAS_CORE3_0_TYPESCRIPT_TEST_DATA_DIR"
   );
 }
 if (!fs.existsSync(TEST_DATA_DIR)) {
   throw new Error(
     "The path read from environment variable " +
-      "AAS_CORE3_1_TYPESCRIPT_TEST_DATA_DIR does not exist: " +
+      "AAS_CORE3_0_TYPESCRIPT_TEST_DATA_DIR does not exist: " +
       TEST_DATA_DIR
   );
 }
 if (!fs.lstatSync(TEST_DATA_DIR).isDirectory()) {
   throw new Error(
     "The path read from environment variable " +
-      "AAS_CORE3_1_TYPESCRIPT_TEST_DATA_DIR is not a directory: " +
+      "AAS_CORE3_0_TYPESCRIPT_TEST_DATA_DIR is not a directory: " +
       TEST_DATA_DIR
   );
 }
@@ -173,21 +173,6 @@ export function assertExpectedOrRecordedVerificationErrors(
  * @returns the mark in the trace
  */
 export function traceMark(instance: AasTypes.Class): string {
-  const identifiable = AasTypes.asIdentifiable(instance);
-  if (identifiable !== null) {
-    return (
-      `${identifiable.constructor.name} with ` + `ID ${JSON.stringify(identifiable.id)}`
-    );
-  }
-
-  const referable = AasTypes.asReferable(instance);
-  if (referable !== null) {
-    return (
-      `${referable.constructor.name} with ` +
-      `ID-short ${JSON.stringify(referable.idShort)}`
-    );
-  }
-
   return instance.constructor.name;
 }
 

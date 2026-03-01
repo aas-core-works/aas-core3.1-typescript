@@ -31,7 +31,7 @@
     "prebuild": "rimraf dist",
     "build": "npm run build:esm && npm run build:cjs && npm run build:bundles && npm run build:declarations",
     "lint": "eslint src test --ext .ts",
-    "test": "jest --coverage",
+    "test": "AAS_CORE3_1_TYPESCRIPT_TEST_DATA_DIR=./test_data jest --coverage",
     "format": "prettier --config .prettierrc \"src/**/*.ts\" \"test/**/*.ts\" \"*.ts\" --write"
   },
   "devDependencies": {

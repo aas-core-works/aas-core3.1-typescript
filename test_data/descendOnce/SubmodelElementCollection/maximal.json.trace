@@ -1,8 +1,17 @@
 Extension
+Extension
 LangStringNameType
+LangStringNameType
+LangStringTextType
 LangStringTextType
 Reference
 Reference
+Reference
+Reference
+Qualifier
+Qualifier
 Qualifier
 EmbeddedDataSpecification
-MultiLanguageProperty with ID-short "somethingd2cab823"
+EmbeddedDataSpecification
+Operation
+BasicEventElement

@@ -402,8 +402,8 @@ However, this needs to be decided on a case-by-case basis.</p>
 <pre><code><span class="hl-0">pip3</span><span class="hl-1"> </span><span class="hl-0">install</span><span class="hl-1"> --</span><span class="hl-0">editable</span><span class="hl-1"> </span><span class="hl-0">dev_scripts</span><span class="hl-1"> --</span><span class="hl-0">group</span><span class="hl-1"> </span><span class="hl-0">dev_scripts</span><span class="hl-1">/</span><span class="hl-0">pyproject</span><span class="hl-1">.</span><span class="hl-0">toml</span><span class="hl-1">:</span><span class="hl-0">dev</span>
 </code></pre>
 </li>
-<li><p>Run the main script:</p>
-<pre><code><span class="hl-0">python</span><span class="hl-1"> </span><span class="hl-0">testgen</span><span class="hl-1">/</span><span class="hl-0">update_to_aas_core_meta_codegen</span><span class="hl-1">.</span><span class="hl-0">py</span>
+<li><p>Run the main update script which will download the latest aas-core-meta model as well as re-generate the code and re-record the test data:</p>
+<pre><code><span class="hl-0">python</span><span class="hl-1"> </span><span class="hl-0">dev_scripts</span><span class="hl-1">/</span><span class="hl-0">update_all</span><span class="hl-1">.</span><span class="hl-0">py</span>
 </code></pre>
 </li>
 </ul>

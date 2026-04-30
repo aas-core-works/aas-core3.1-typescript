@@ -865,10 +865,10 @@ To re-generate the code:
   pip3 install --editable dev_scripts --group dev_scripts/pyproject.toml:dev
   ```
 
-* Run the main script:
+* Run the main update script which will download the latest aas-core-meta model as well as re-generate the code and re-record the test data:
 
   ```
-  python testgen/update_to_aas_core_meta_codegen.py
+  python dev_scripts/update_all.py
   ```
 
 ### Building the Documentation

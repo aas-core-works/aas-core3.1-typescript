@@ -34,6 +34,9 @@
     "test": "AAS_CORE3_1_TYPESCRIPT_TEST_DATA_DIR=./test_data jest --coverage",
     "format": "prettier --config .prettierrc \"src/**/*.ts\" \"test/**/*.ts\" \"*.ts\" --write"
   },
+  "dependencies": {
+    "xmlsax-typescript": "1.0.0-rc.2"
+  },
   "devDependencies": {
     "@babel/cli": "^7.20.7",
     "@babel/core": "^7.20.12",
@@ -88,6 +91,11 @@
       "require": "./dist/lib/cjs/verification.js",
       "import": "./dist/lib/esm/verification.js",
       "types": "./dist/types/verification.d.ts"
+    },
+    "./xmlization": {
+      "require": "./dist/lib/cjs/xmlization.js",
+      "import": "./dist/lib/esm/xmlization.js",
+      "types": "./dist/types/xmlization.d.ts"
     }
   },
   "typesVersions": {
@@ -106,6 +114,9 @@
       ],
       "verification": [
         "./dist/types/verification.d.ts"
+      ],
+      "xmlization": [
+        "./dist/types/xmlization.d.ts"
       ]
     }
   },

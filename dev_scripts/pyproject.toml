@@ -19,7 +19,7 @@ classifiers = [
 ]
 requires-python = ">=3.9"
 dependencies = [
-    "aas-core-codegen==0.0.23",
+    "aas-core-codegen==0.0.24",
     "requests>=2.32.5",
 ]
 

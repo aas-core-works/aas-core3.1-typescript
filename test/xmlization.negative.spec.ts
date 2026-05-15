@@ -63,6 +63,31 @@ test("XML wrong root closing element fails", () => {
   expectDeserializationError(brokenText);
 });
 
+test("XML duplicate property fails", () => {
+  const text = readExpectedXml("extension", "minimal.xml");
+
+  const propertyName = "name";
+  const propertyPattern = new RegExp(
+    `(<${escapeRegExp(propertyName)}>[\\s\\S]*?</${escapeRegExp(propertyName)}>)`
+  );
+  const match = propertyPattern.exec(text);
+  if (match === null) {
+    throw new Error(`Failed to find a property element for: ${propertyName}`);
+  }
+
+  const rootClosing = "</extension>";
+  const insertionIndex = text.lastIndexOf(rootClosing);
+  if (insertionIndex < 0) {
+    throw new Error(`Failed to find root closing tag: ${rootClosing}`);
+  }
+
+  const duplicatedProperty = match[1];
+  const brokenText =
+    text.slice(0, insertionIndex) + duplicatedProperty + text.slice(insertionIndex);
+
+  expectDeserializationError(brokenText);
+});
+
 test("XML nested class dispatch mismatch fails", () => {
   const text = readExpectedXml("operationVariable", "maximal.xml");
 

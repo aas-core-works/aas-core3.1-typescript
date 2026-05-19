@@ -9,7 +9,7 @@ This is a software development kit (SDK) to:
 
 * manipulate,
 * verify, and
-* de/serialize to and from JSON
+* de/serialize to and from JSON and XML
 
 … Asset Administration Shells based on the version 3.1 of the meta-model.
 
@@ -39,7 +39,8 @@ See how you can:
 * [Switch on runtime types of instances](#switch-on-runtime-types),
 * [Iterate over, copy and transform a model](#iterate-and-transform),
 * [Verify a model](#verify), and
-* [De/serialize a model from and to JSON](#json-deserialization).
+* [De/serialize a model from and to JSON](#json-deserialization), and
+* [De/serialize a model from and to XML](#xml-deserialization).
 
 ### Install the SDK
 
@@ -711,6 +712,105 @@ for (const something of environment.descend()) {
 // Property
 ```
 
+### XML de/serialization
+
+Our SDK handles the de/serialization of the AAS models from and to XML format through the module [`xmlization`].
+
+[`xmlization`]: https://aas-core-works.github.io/aas-core3.1-typescript/modules/xmlization.html
+
+#### Serialize
+
+To serialize, you call the function [`xmlization.toXmlString`] on an instance of [`types.Class`] which will convert it to an XML string.
+
+[`xmlization.toXmlString`]: https://aas-core-works.github.io/aas-core3.1-typescript/functions/xmlization.toXmlString.html
+
+Here is a snippet that converts the environment to an XML string:
+
+```typescript
+import * as aas from "@aas-core-works/aas-core3.1-typescript";
+
+// Prepare the environment
+const someElement = new aas.types.Property(
+  aas.types.DataTypeDefXsd.Int
+);
+someElement.idShort = "someProperty";
+someElement.value = "1984";
+
+const submodel = new aas.types.Submodel(
+  "some-unique-global-identifier"
+);
+submodel.submodelElements = [someElement];
+
+const environment = new aas.types.Environment();
+environment.submodels = [submodel];
+
+// Serialize to XML
+const text = aas.xmlization.toXmlString(environment);
+
+console.log(text);
+// Prints:
+// <environment xmlns="https://admin-shell.io/aas/3/1">...</environment>
+```
+
+#### De-serialize
+
+Our SDK can convert an XML string to an instance of [`types.Class`].
+To that end, you call [`xmlization.fromXmlString`].
+
+[`xmlization.fromXmlString`]: https://aas-core-works.github.io/aas-core3.1-typescript/functions/xmlization.fromXmlString.html
+
+The function [`xmlization.fromXmlString`] returns an ["either" structure]: either the successfully de-serialized instance, or a de-serialization error, if there was any.
+If there was an error, its property [`error`] will be set.
+Otherwise, the property [`value`] will contain the de-serialized instance.
+If you prefer an exception to be thrown in case of de-serialization errors, and do not want to check for [`error`] explicitly, then call the method [`mustValue`].
+
+Here is an example snippet to show you how to de-serialize an instance from XML:
+
+```typescript
+import * as aas from "@aas-core-works/aas-core3.1-typescript";
+
+const text = `
+<environment xmlns="https://admin-shell.io/aas/3/1">
+  <submodels>
+    <submodel>
+      <id>some-unique-global-identifier</id>
+      <submodelElements>
+        <property>
+          <idShort>someProperty</idShort>
+          <valueType>xs:boolean</valueType>
+        </property>
+      </submodelElements>
+    </submodel>
+  </submodels>
+</environment>
+`;
+
+const instanceOrError = aas.xmlization.fromXmlString(text);
+if (instanceOrError.error !== null) {
+  console.log(
+    "De-serialization failed: " +
+    `${instanceOrError.error.path}: ` +
+    `${instanceOrError.error.message}`
+  );
+}
+// Doesn't print anything as `text` is
+// a valid representation.
+
+const instance = instanceOrError.mustValue();
+const environment = aas.types.asEnvironment(instance);
+
+if (environment === null) {
+  throw new Error("Expected an Environment as the XML root element");
+}
+
+for (const something of environment.descend()) {
+  console.log(something.constructor.name);
+}
+// Prints:
+// Submodel
+// Property
+```
+
 ## API
 
 For a detailed documentation of the API, see [API documentation].
@@ -764,18 +864,6 @@ By using `Either`, we can do away with try/catch blocks and shave off quite a fe
 See Section [De-serialize] for more information.
 
 [De-serialize]: #de-serialize
-
-### No XML
-
-We do not implement XML as we could not find a solid library as of time of this writing (2022-12-21) which works both for NodeJS and in the browsers.
-The closest we got is [sax.js], but it seems not maintained anymore (see [this issue in sax.js repository about maintenance]).
-There are multiple forks, such as [saxes], but they seem to have much lower visibility and attention.
-
-[sax.js]: https://github.com/isaacs/sax-js
-[this issue in sax.js repository about maintenance]: https://github.com/isaacs/sax-js/issues/238
-[saxes]: https://github.com/lddubeau/saxes
-
-We are open to suggestions, and we are of course ready to re-evaluate our current decision to skip XML de/serialization of AAS models.
 
 ### Bytes as `Uint8Array`
 
